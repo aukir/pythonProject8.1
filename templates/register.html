@@ -1,0 +1,36 @@
+{% extends 'shablon.html' %}
+
+{% block style %}
+<style>
+    body {
+        background-image: url("{{ url_for('static', filename='1.jpg') }}");
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+    }
+    .btn1 {
+    background-color: rgba(144, 238, 144, 0.3);
+    color: white;
+    padding: 15px;
+    border-radius: 10px;
+}
+</style>
+{% endblock %}
+
+{% block title%}
+регистрация
+{% endblock %}
+{% block body %}
+{% for i in get_flashed_messages() %}
+<div class="flash">{{i}}</div>
+{% endfor %}
+<div class="p-4 p-md-5 mb-4 rounded text-body-emphasis bg-body-secondary">
+    <h1 style="color: white;">регистрация</h1>
+    <form method="POST" action="/register" class="form-control">
+        <p style="color: white;">имя</p><input type="text" name="name" id="name" class="form-control" required /><br>
+        <p style="color: white;">email</p><input type="text" name="email" id="email" class="form-control" required /><br>
+        <p style="color: white;">пароль</p><input type="password" name="psw" id="psw" class="form-control" required /><br>
+        <input type="submit"  class="btn1" value="отправляем" /><br>
+    </form>
+</div>
+{% endblock %}

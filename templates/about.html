@@ -1,0 +1,42 @@
+{% extends 'shablon.html' %}
+{% block style %}
+<style>
+    body {
+        background-image: url("{{ url_for('static', filename='3.jpg') }}");
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+    }
+    .flash {
+    background-color: rgba(144, 238, 144, 0.5);
+    color: black;
+    padding: 10px;
+    width: 100%;
+    border-radius: 5px;
+}
+.btn1 {
+    background-color: rgba(144, 238, 144, 0.3);
+    color: black;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+</style>
+{% endblock %}
+{% block title%}
+вход
+{% endblock %}
+{% block body %}
+<div class="p-4 p-md-5 mb-4 rounded text-body-emphasis bg-body-secondary">
+    {% for i in get_flashed_messages() %}
+    <div class="flash">{{i}}</div>
+    {% endfor %}
+    <h1>вход</h1>
+    <form method="POST" action="">
+        <p>email</p><input type="text" name="email" class="form-control"><br>
+        <p>пароль</p><input type="password" name="psw" class="form-control"><br>
+        <input type="checkbox" name="remainme">запомнить<br>
+        <input type="submit"  class="btn1" value="отправляем"><br>
+    </form>
+</div>
+{% endblock %}

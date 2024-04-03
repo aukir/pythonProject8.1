@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, session, redirect, url_for, abort, g, flash
+from flask import Flask, render_template, request, session, redirect, url_for, abort, g, flash, make_response
 import sqlite3
 import os
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -9,7 +9,7 @@ from UserLogin import UserLogin
 DATABASE = '/tmp/flsite.db'
 SECRET_KEY = 'roeu8u0qwo3w04h65y7o2iq'
 DEBUG = True
-
+MAX_CONTENT_LENGTH = 1024 * 1024
 
 app = Flask(__name__)
 app.config.from_object(__name__)
@@ -118,8 +118,19 @@ def logout():
 @app.route('/profile')
 @login_required
 def profile():
-    return f"""<p><a href="{url_for('logout')}">выйти из профиля</a> 
-    <p>user info: {current_user.get_id()}"""
+    return render_template("profile.html", title="профиль")
+
+
+@app.route('/userava')
+@login_required
+def userava():
+    img = current_user.getAvatar(app)
+    if not img:
+        return ""
+
+    h = make_response(img)
+    h.headers['Content-Type'] = 'image/png'
+    return h
 
 
 if __name__ == "__main__":

@@ -29,7 +29,7 @@ class FDataBase:
                 return False
 
             tm = math.floor(time.time())
-            self.__cur.execute("INSERT INTO user VALUES(NULL, ?,?,?,?)", (name, email, hpsw, tm))
+            self.__cur.execute("INSERT INTO user VALUES(NULL, ?,?,?,NULL,?)", (name, email, hpsw, tm))
             self.__db.commit()
         except sqlite3.Error as e:
             print("ошибка добавления пользователя в бд" + str(e))

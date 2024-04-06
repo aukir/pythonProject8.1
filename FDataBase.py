@@ -62,5 +62,16 @@ class FDataBase:
 
         return False
 
+    def updateUserAvatar(self, avatar, user_id):
+        if not avatar:
+            return False
+        try:
+            binary = sqlite3.Binary(avatar)
+            self.__cur.execute(f"UPDATE user SET file = ? WHERE id = ?", (binary, user_id))
+            self.__db.commit()
+        except sqlite3.Error as e:
+            print("ошибка обновления в бд"+str(e))
+            return False
+        return True
 
 

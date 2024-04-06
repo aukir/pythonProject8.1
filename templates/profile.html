@@ -8,6 +8,13 @@
         background-attachment: fixed;
         background-size: cover;
     }
+    .flash {
+        background-color: rgba(144, 238, 144, 0.5);
+        color: black;
+        padding: 10px;
+        width: 100%;
+        border-radius: 5px;
+    }
     .btn1 {
     background-color: rgba(144, 238, 144, 0.3);
     color: white;
@@ -18,32 +25,36 @@
 {% endblock %}
 
 {% block title%}
-профиль
+profile
 {% endblock %}
 {% block body %}
-{% for i in get_flashed_messages(True) %}
-<div class="flash">{{i}}</div>
-{% endfor %}
-
     <table border="0" class="profile-table">
         <tr>
+            <td>
+                {% for i in get_flashed_messages(True) %}
+                <div class="flash">{{i}}</div>
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
             <td valign="top">
-                <div class="profile-ava"><img src="{{ url_for('userava') }}"></div>
+                <div class="profile-ava"><img src="{{ url_for('userava') }}"  width="80" height="80"></div>
                 <div class="profile-load">
                     <form action="{{ url_for('upload') }}" method="post" enctype="multipart/form-data">
                         <p><input type="file" name="file"> </p>
-                        <p><input type="submit" value="загрузить"> </p>
+                        <p><input type="submit" value="dowland"> </p>
                     </form>
                 </div>
             </td>
             <td valign="top" class="profile-panel">
-                <p><a href="{{ url_for('logout' }}">выйти из профиля</a> </p>
+                <p><a href="{{ url_for('logout') }}">o</a> </p>
                 <ul class="profile-info">
-                    <li>имя: {{ current_user.getName() }}</li>
+                    <li>name: {{ current_user.getName() }}</li>
                     <li>email: {{ current_user.getEmail() }}</li>
                 </ul>
             </td>
         </tr>
+
     </table>
 
 {% endblock %}

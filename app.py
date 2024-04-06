@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from flask import Flask, render_template, request, session, redirect, url_for, abort, g, flash, make_response
 import sqlite3
 import os
@@ -118,7 +119,7 @@ def logout():
 @app.route('/profile')
 @login_required
 def profile():
-    return render_template("profile.html", title="профиль")
+    return render_template("profile.html")
 
 
 @app.route('/userava')
@@ -131,6 +132,25 @@ def userava():
     h = make_response(img)
     h.headers['Content-Type'] = 'image/png'
     return h
+
+
+@app.route('/upload', methods=["POST", "GET"])
+@login_required
+def upload():
+    if request.method == 'POST':
+        file = request.files['file']
+        if file and current_user.verifyExt(file.filename):
+            try:
+                img = file.read()
+                res = dbase.updateUserAvatar(img, current_user.get_id())
+                if not res:
+                    flash("ошибка обновления авы", "error")
+                flash("ава обновилась")
+            except FileNotFoundError as e:
+                flash("ошибка чтения файла")
+        else:
+            flash("ошибка обновления", "error")
+    return redirect(url_for('profile'))
 
 
 if __name__ == "__main__":

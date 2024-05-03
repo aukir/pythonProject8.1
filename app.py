@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from flask import Flask, render_template, request, session, redirect, url_for, abort, g, flash, make_response
 import sqlite3
 import os
@@ -6,6 +5,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from FDataBase import FDataBase
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from UserLogin import UserLogin
+
 
 DATABASE = '/tmp/flsite.db'
 SECRET_KEY = 'roeu8u0qwo3w04h65y7o2iq'
@@ -119,7 +119,23 @@ def logout():
 @app.route('/profile')
 @login_required
 def profile():
-    return render_template("profile.html")
+    db = get_db()
+    dbase = FDataBase(db)
+    path = dbase.path_folder(current_user.get_id())
+    if not path:
+        return "1234"
+    if not os.path.exists(path) or not os.path.isdir(path):
+        print(f"Путь {path} не существует или не является директорией")
+    else:
+        print("все гуд")
+    files = os.listdir(path=path)
+    print(files)
+
+    file_urls = [url_for('static', filename=os.path.join(path, filename)) for filename in files]
+    return render_template('profile.html', files=files, file_urls=file_urls)
+
+
+app.jinja_env.globals.update(zip=zip)
 
 
 @app.route('/userava')
@@ -137,6 +153,8 @@ def userava():
 @app.route('/upload', methods=["POST", "GET"])
 @login_required
 def upload():
+    db = get_db()
+    dbase = FDataBase(db)
     if request.method == 'POST':
         file = request.files['file']
         if file and current_user.verifyExt(file.filename):
@@ -154,4 +172,4 @@ def upload():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="127.0.0.1", port=5000)

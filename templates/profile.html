@@ -1,3 +1,4 @@
+
 {% extends 'shablon.html' %}
 
 {% block style %}
@@ -47,10 +48,22 @@ profile
                 </div>
             </td>
             <td valign="top" class="profile-panel">
-                <p><a href="{{ url_for('logout') }}">o</a> </p>
+                <p><a href="{{ url_for('logout') }}">exit</a> </p>
                 <ul class="profile-info">
                     <li>name: {{ current_user.getName() }}</li>
                     <li>email: {{ current_user.getEmail() }}</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <ul>
+                    {% for file, file_url in zip(files, file_urls) %}
+                    <li>{{ file }}</li>
+                    <a href="{{ file_url }}" download="{{ file }}">
+                    <button>dowland</button>
+                    </a>
+                    {% endfor %}
                 </ul>
             </td>
         </tr>

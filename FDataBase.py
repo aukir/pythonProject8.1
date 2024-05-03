@@ -29,7 +29,7 @@ class FDataBase:
                 return False
 
             tm = math.floor(time.time())
-            self.__cur.execute("INSERT INTO user VALUES(NULL, ?,?,?,NULL,?)", (name, email, hpsw, tm))
+            self.__cur.execute("INSERT INTO user VALUES(NULL, ?,?,?,NULL,NULL,?)", (name, email, hpsw, tm))
             self.__db.commit()
         except sqlite3.Error as e:
             print("ошибка добавления пользователя в бд" + str(e))
@@ -73,5 +73,20 @@ class FDataBase:
             print("ошибка обновления в бд"+str(e))
             return False
         return True
+
+    def path_folder(self, user_id):
+        try:
+            self.__cur.execute(f"SELECT folder FROM user WHERE id = '{user_id}' LIMIT 1")
+            path = self.__cur.fetchone()[0]
+            if not path:
+                print("путь не найден")
+                return False
+            return path
+        except sqlite3.Error as e:
+            print("ошибка получения данных из бд" + str(e))
+        except Exception as e:
+            print("Неожиданная ошибка: " + str(e))
+
+
 
 

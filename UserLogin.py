@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from flask_login import UserMixin
 from flask import url_for
 
@@ -47,4 +46,12 @@ class UserLogin():
         if ext == "png" or ext == "PNG":
             return True
         return False
+
+    def files(self):
+        files = None
+        if not self.__user['folder']:
+            return ""
+        else:
+            files = self.__user['folder']
+        return files
 
